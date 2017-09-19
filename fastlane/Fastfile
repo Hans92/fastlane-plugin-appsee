@@ -1,0 +1,10 @@
+
+desc "Example of uploading symbols to Appsee using this plugin"
+desc "Usage: fastlane example build_number:1234 appsee_api_key:abcd...123"
+lane :example do |options|
+  build_number = options[:build_number] # The build number for the dSYMS you want
+  appsee_api_key = options[:appsee_api_key] # Your API key for uploading dSYMS to Appsee
+
+  download_dsyms(build_number: build_number)
+  upload_symbols_to_appsee(api_key: appsee_api_key)
+end
