@@ -1,6 +1,6 @@
 # appsee plugin
 
-[![fastlane Plugin Badge](https://rawcdn.githack.com/fastlane/fastlane/master/fastlane/assets/plugin-badge.svg)](https://rubygems.org/gems/fastlane-plugin-appsee)
+[![fastlane Plugin Badge](https://rawcdn.githack.com/fastlane/fastlane/master/fastlane/assets/plugin-badge.svg)](https://rubygems.org/gems/fastlane-plugin-appsee) [![Build Status](https://travis-ci.org/nathanshox/fastlane-plugin-appsee.svg?branch=master)](https://travis-ci.org/nathanshox/fastlane-plugin-appsee)
 
 ## Getting Started
 
