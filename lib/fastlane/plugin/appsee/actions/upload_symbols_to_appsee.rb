@@ -8,6 +8,7 @@ module Fastlane
 
         zip_path = lane_context[SharedValues::DSYM_PATHS].first
 
+        # rubocop:disable Style/FormatStringToken
         sh "curl 'https://api.appsee.com/crashes/upload-symbols?APIKey=#{params[:api_key]}' --write-out %{http_code} --verbose --output /dev/null -F dsym=@'#{zip_path}'"
       end
 
