@@ -2,11 +2,11 @@ module Fastlane
   module Actions
     class UploadSymbolsToAppseeAction < Action
       def self.run(params)
-        if lane_context[SharedValues::DSYM_PATHS].nil?
-          UI.user_error! "DSYM_PATHS is nil. Please run the `download_dsyms` action before running this action"
-        end
-
-        zip_path = lane_context[SharedValues::DSYM_PATHS].first
+        
+        dsym_paths = []
+        dsym_paths << params[:dsym_path] if params[:dsym_path]
+        dsym_paths += Actions.lane_context[SharedValues::DSYM_PATHS] if Actions.lane_context[SharedValues::DSYM_PATHS]
+        zip_path = dsym_paths.first
 
         # rubocop:disable Style/FormatStringToken
         sh "curl 'https://api.appsee.com/crashes/upload-symbols?APIKey=#{params[:api_key]}' --write-out %{http_code} --verbose --output /dev/null -F dsym=@'#{zip_path}'"
@@ -39,6 +39,13 @@ module Fastlane
                                        description: "API key for UploadSymbolsToAppseeAction", # a short description of this parameter
                                        verify_block: proc do |value|
                                          UI.user_error!("No API key for UploadSymbolsToAppseeAction given, pass using `api_key: 'key'`") unless value and !value.empty?
+                                       end),
+          FastlaneCore::ConfigItem.new(key: :dsym_path,
+                                       env_name: "FL_UPLOAD_SYMBOLS_TO_APPSEE_DSYM_PATH", # The name of the environment variable
+                                       description: "Path to the DSYM file or zip to upload", # a short description of this parameter
+                                       verify_block: proc do |value|
+                                         UI.user_error!("Couldn't find file at path '#{File.expand_path(value)}'") unless File.exist?(value)
+                                         UI.user_error!("Symbolication file needs to be dSYM or zip") unless value.end_with?(".zip", ".dSYM")
                                        end)
         ]
       end
